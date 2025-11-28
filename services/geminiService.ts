@@ -56,7 +56,12 @@ export const generateAstrologicalJudgment = async (
       contents: prompt,
     });
 
-    return response.text || "عذراً، لم أتمكن من استخراج الحكم. يرجى المحاولة لاحقاً.";
+    // Check if the response contains text. If blocked or empty, throw an error.
+    if (!response.text) {
+      throw new Error("NO_CONTENT_GENERATED");
+    }
+
+    return response.text;
   } catch (error) {
     console.error("Gemini API Error:", error);
     throw error;

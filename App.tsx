@@ -110,11 +110,25 @@ const App: React.FC = () => {
 
     } catch (error: any) {
       console.error("Error in calculation flow:", error);
-      if (error.message === "MISSING_API_KEY") {
-        setAiResponse("عذراً، مفتاح الربط (API Key) غير موجود في النظام. إذا كنت تشغل التطبيق محلياً، تأكد من إضافة المفتاح في ملف .env");
-      } else {
-        setAiResponse("حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.");
+      
+      let errorMessage = "حدث خطأ غير متوقع أثناء استخراج الحكم. يرجى المحاولة مرة أخرى.";
+      const errString = error.message || error.toString();
+
+      if (errString.includes("MISSING_API_KEY")) {
+        errorMessage = "⚠️ تنبيه: مفتاح الربط (API Key) مفقود. يرجى التأكد من إعداده بشكل صحيح.";
+      } else if (errString.includes("API key not valid") || errString.includes("400")) {
+         errorMessage = "⚠️ تنبيه: مفتاح الربط (API Key) غير صالح. يرجى التحقق من صحة المفتاح.";
+      } else if (errString.includes("quota") || errString.includes("429")) {
+         errorMessage = "⚠️ تنبيه: تم تجاوز حد الاستخدام المسموح به (Quota Exceeded). يرجى المحاولة لاحقاً.";
+      } else if (errString.includes("fetch failed") || errString.includes("NetworkError")) {
+         errorMessage = "⚠️ تنبيه: تعذر الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت.";
+      } else if (errString.includes("NO_CONTENT_GENERATED") || errString.includes("SAFETY")) {
+          errorMessage = "⚠️ عذراً: لم يتمكن النظام من صياغة الحكم (قد يكون المحتوى محجوباً أو غير مناسب لسياسات النموذج).";
+      } else if (error.status === 503) {
+          errorMessage = "⚠️ تنبيه: الخدمة مشغولة حالياً. يرجى المحاولة بعد قليل.";
       }
+
+      setAiResponse(errorMessage);
     } finally {
       setLoading(false);
     }

@@ -73,50 +73,56 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, aiResponse }) => 
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Nature/Element Display (Calculated from Name) */}
-          <div className="p-6 bg-gradient-to-br from-indigo-900/40 via-purple-900/40 to-mystic-dark border border-blue-500/30 rounded-2xl relative overflow-hidden group h-full">
+          <div className="p-6 bg-gradient-to-br from-indigo-900/40 via-purple-900/40 to-mystic-dark border border-blue-500/30 rounded-2xl relative overflow-hidden group h-full flex flex-col">
              <div className="absolute top-0 right-0 bg-blue-500/20 text-blue-200 text-xs px-2 py-1 rounded-bl-lg font-kufi">حسب الاسم (روحاني)</div>
-             <div className="flex flex-col items-center justify-between gap-4 relative z-10 text-center h-full">
-               <div className="p-3 bg-mystic-dark/50 rounded-full border border-blue-400/30 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+             
+             <div className="flex-1 flex flex-row items-center justify-center gap-5 relative z-10 text-center my-2">
+               <div className="p-3 bg-mystic-dark/50 rounded-full border border-blue-400/30 shadow-[0_0_15px_rgba(59,130,246,0.3)] shrink-0">
                   <ZodiacSymbol signNumber={result.signNumber} className="w-12 h-12 text-blue-200" />
                </div>
-               <div>
-                  <div className="text-blue-300 text-sm font-kufi mb-1">البرج الطالع (بالاسم)</div>
-                  <div className="text-2xl font-bold text-white font-amiri">{result.zodiacSign}</div>
+               <div className="text-right">
+                  <div className="text-blue-300 text-xs font-kufi mb-1">البرج الطالع</div>
+                  <div className="text-3xl font-bold text-white font-amiri leading-none">{result.zodiacSign}</div>
                </div>
-               <div className="flex gap-4 text-sm w-full justify-center border-t border-white/10 pt-2 mt-auto">
-                 <div>
-                    <span className="text-blue-400 block text-xs">العنصر</span>
-                    <span className="text-white">{result.element}</span>
-                 </div>
-                 <div>
-                    <span className="text-blue-400 block text-xs">الطبيعة</span>
-                    <span className="text-white">{result.quality}</span>
-                 </div>
+             </div>
+
+             <div className="flex gap-4 text-sm w-full justify-center border-t border-white/10 pt-3 mt-auto relative z-10">
+               <div className="text-center px-2">
+                  <span className="text-blue-400 block text-xs mb-1">العنصر</span>
+                  <span className="text-white font-bold">{result.element}</span>
+               </div>
+               <div className="w-px bg-white/10"></div>
+               <div className="text-center px-2">
+                  <span className="text-blue-400 block text-xs mb-1">الطبيعة</span>
+                  <span className="text-white font-bold">{result.quality}</span>
                </div>
              </div>
           </div>
 
           {/* Birth Sign Display (Calculated from Date) */}
           {result.birthZodiacSign ? (
-            <div className="p-6 bg-gradient-to-br from-orange-900/40 via-red-900/40 to-mystic-dark border border-orange-500/30 rounded-2xl relative overflow-hidden group h-full">
+            <div className="p-6 bg-gradient-to-br from-orange-900/40 via-red-900/40 to-mystic-dark border border-orange-500/30 rounded-2xl relative overflow-hidden group h-full flex flex-col">
                <div className="absolute top-0 right-0 bg-orange-500/20 text-orange-200 text-xs px-2 py-1 rounded-bl-lg font-kufi">حسب الميلاد (شمسي)</div>
-               <div className="flex flex-col items-center justify-between gap-4 relative z-10 text-center h-full">
-                 <div className="p-3 bg-mystic-dark/50 rounded-full border border-orange-400/30 shadow-[0_0_15px_rgba(249,115,22,0.3)]">
+               
+               <div className="flex-1 flex flex-row items-center justify-center gap-5 relative z-10 text-center my-2">
+                 <div className="p-3 bg-mystic-dark/50 rounded-full border border-orange-400/30 shadow-[0_0_15px_rgba(249,115,22,0.3)] shrink-0">
                     <ZodiacSymbol signNumber={result.birthSignNumber || 1} className="w-12 h-12 text-orange-200" />
                  </div>
-                 <div>
-                    <div className="text-orange-300 text-sm font-kufi mb-1">البرج الشمسي</div>
-                    <div className="text-2xl font-bold text-white font-amiri">{result.birthZodiacSign}</div>
+                 <div className="text-right">
+                    <div className="text-orange-300 text-xs font-kufi mb-1">البرج الشمسي</div>
+                    <div className="text-3xl font-bold text-white font-amiri leading-none">{result.birthZodiacSign}</div>
                  </div>
-                 <div className="flex gap-4 text-sm w-full justify-center border-t border-white/10 pt-2 mt-auto">
-                   <div>
-                      <span className="text-orange-400 block text-xs">العنصر</span>
-                      <span className="text-white">{result.birthElement}</span>
-                   </div>
-                   <div>
-                      <span className="text-orange-400 block text-xs">الطبيعة</span>
-                      <span className="text-white">{result.birthQuality}</span>
-                   </div>
+               </div>
+
+               <div className="flex gap-4 text-sm w-full justify-center border-t border-white/10 pt-3 mt-auto relative z-10">
+                 <div className="text-center px-2">
+                    <span className="text-orange-400 block text-xs mb-1">العنصر</span>
+                    <span className="text-white font-bold">{result.birthElement}</span>
+                 </div>
+                 <div className="w-px bg-white/10"></div>
+                 <div className="text-center px-2">
+                    <span className="text-orange-400 block text-xs mb-1">الطبيعة</span>
+                    <span className="text-white font-bold">{result.birthQuality}</span>
                  </div>
                </div>
             </div>
@@ -131,28 +137,27 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, aiResponse }) => 
 
         {/* Main Result */}
         <div className="p-8 bg-gradient-to-br from-mystic-purple/40 to-mystic-accent/20 rounded-2xl border border-mystic-gold/50 text-center relative overflow-hidden flex flex-col items-center">
-           <div className="text-gray-300 font-kufi text-sm mb-4 relative z-10 uppercase tracking-widest">
+           <div className="text-gray-300 font-kufi text-sm mb-2 relative z-10 uppercase tracking-widest">
              حكم الزيارج (الإسقاط على {result.isqatType})
            </div>
            
-           <div className="flex items-center justify-center gap-6 mb-4 relative z-10 w-full">
-              {/* If result is House (12), show the matching zodiac icon */}
-              {result.isqatType === 12 && (
-                 <ZodiacSymbol signNumber={result.finalNumber} className="w-20 h-20 text-mystic-gold opacity-80" />
-              )}
-              
-              <div className="text-7xl font-amiri font-bold text-mystic-gold drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+           <div className="text-8xl font-amiri font-bold text-mystic-gold drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)] my-2 relative z-10">
                 {result.finalNumber}
-              </div>
            </div>
 
-           <div className="text-3xl text-white font-amiri relative z-10 mb-2">
-             {result.isqatType === 7 ? 'الكوكب الحاكم للمسألة' : 'البيت الفلكي للمسألة'}: <span className="text-mystic-gold font-bold">{result.planetOrHouse}</span>
+           <div className="flex items-center justify-center gap-3 relative z-10 mb-4">
+              {/* Show icon only if it's a Zodiac House result (12) */}
+              {result.isqatType === 12 && (
+                 <ZodiacSymbol signNumber={result.finalNumber} className="w-8 h-8 text-mystic-gold" />
+              )}
+              <div className="text-3xl text-white font-amiri">
+                {result.isqatType === 7 ? 'الكوكب:' : 'البيت:'} <span className="text-mystic-gold font-bold">{result.planetOrHouse}</span>
+              </div>
            </div>
            
            {/* If House, show ruler */}
            {result.isqatType === 12 && (
-             <div className="text-lg text-gray-300 mt-1 font-kufi relative z-10 bg-black/20 px-4 py-1 rounded-full">
+             <div className="text-lg text-gray-300 mt-1 font-kufi relative z-10 bg-black/20 px-4 py-1 rounded-full border border-white/5">
                يحكمه كوكب: <span className="text-mystic-gold font-bold">{result.rulingPlanet}</span>
              </div>
            )}
