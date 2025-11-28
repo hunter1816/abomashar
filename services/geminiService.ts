@@ -56,8 +56,14 @@ export const generateAstrologicalJudgment = async (
       contents: prompt,
     });
 
-    // Check if the response contains text. If blocked or empty, throw an error.
+    // Check if the response contains text.
     if (!response.text) {
+      // Check for safety filters or other finish reasons
+      const candidate = response.candidates?.[0];
+      if (candidate?.finishReason) {
+        // Pass the specific reason to be handled in UI
+        throw new Error(`BLOCKED_REASON_${candidate.finishReason}`);
+      }
       throw new Error("NO_CONTENT_GENERATED");
     }
 

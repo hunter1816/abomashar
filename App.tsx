@@ -111,21 +111,47 @@ const App: React.FC = () => {
     } catch (error: any) {
       console.error("Error in calculation flow:", error);
       
-      let errorMessage = "حدث خطأ غير متوقع أثناء استخراج الحكم. يرجى المحاولة مرة أخرى.";
+      let errorMessage = "⚠️ **حدث خطأ غير متوقع**\n\nواجه التطبيق مشكلة أثناء استخراج الحكم. يرجى المحاولة مرة أخرى.";
       const errString = error.message || error.toString();
 
       if (errString.includes("MISSING_API_KEY")) {
-        errorMessage = "⚠️ تنبيه: مفتاح الربط (API Key) مفقود. يرجى التأكد من إعداده بشكل صحيح.";
-      } else if (errString.includes("API key not valid") || errString.includes("400")) {
-         errorMessage = "⚠️ تنبيه: مفتاح الربط (API Key) غير صالح. يرجى التحقق من صحة المفتاح.";
-      } else if (errString.includes("quota") || errString.includes("429")) {
-         errorMessage = "⚠️ تنبيه: تم تجاوز حد الاستخدام المسموح به (Quota Exceeded). يرجى المحاولة لاحقاً.";
+        errorMessage = `⚠️ **تنبيه هام: مفتاح الربط (API Key) مفقود**
+        
+لم يتم العثور على مفتاح API. هذا التطبيق يتطلب مفتاحاً من Google Gemini ليعمل.
+1. احصل على المفتاح من [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. تأكد من إضافته بشكل صحيح في الكود أو متغيرات البيئة.`;
+
+      } else if (errString.includes("API key not valid") || errString.includes("400") || errString.includes("INVALID_ARGUMENT")) {
+         errorMessage = `⚠️ **خطأ في المصادقة**
+         
+مفتاح API المستخدم غير صالح. يرجى التأكد من نسخه بشكل صحيح دون أي مسافات زائدة.
+[راجع مفاتيح API الخاصة بك](https://aistudio.google.com/app/apikey)`;
+
+      } else if (errString.includes("quota") || errString.includes("429") || errString.includes("RESOURCE_EXHAUSTED")) {
+         errorMessage = `⚠️ **تم تجاوز الحد المسموح (Quota Exceeded)**
+         
+لقد استنفدت عدد الطلبات المسموح به لهذا المفتاح في الوقت الحالي.
+⏳ **الحل:** يرجى الانتظار دقيقة واحدة ثم المحاولة، أو استخدام مفتاح لمشروع مدفوع إذا كنت تستخدم النسخة المجانية بكثافة.`;
+
       } else if (errString.includes("fetch failed") || errString.includes("NetworkError")) {
-         errorMessage = "⚠️ تنبيه: تعذر الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت.";
-      } else if (errString.includes("NO_CONTENT_GENERATED") || errString.includes("SAFETY")) {
-          errorMessage = "⚠️ عذراً: لم يتمكن النظام من صياغة الحكم (قد يكون المحتوى محجوباً أو غير مناسب لسياسات النموذج).";
+         errorMessage = `⚠️ **خطأ في الاتصال بالإنترنت**
+         
+تعذر الاتصال بخوادم Google.
+* تحقق من اتصالك بالإنترنت.
+* إذا كنت تستخدم VPN أو بروكسي، حاول إيقافه.
+* تأكد من إعدادات DNS.`;
+
+      } else if (errString.includes("BLOCKED_REASON_SAFETY") || errString.includes("SAFETY")) {
+          errorMessage = `⚠️ **تم حجب المحتوى (فلاتر الأمان)**
+          
+نعتذر، لم يتمكن الذكاء الاصطناعي من صياغة الحكم لأن المدخلات أو النتيجة المتوقعة قد انتهكت معايير السلامة الخاصة بـ Google.
+**الحل:** حاول تغيير صياغة الأسماء قليلاً أو اختيار نوع مسألة مختلف.`;
+
+      } else if (errString.includes("NO_CONTENT_GENERATED")) {
+          errorMessage = "⚠️ **خطأ في التوليد**: لم تُرجع الخدمة أي إجابة نصية. قد تكون الخدمة مشغولة، يرجى المحاولة مرة أخرى.";
+          
       } else if (error.status === 503) {
-          errorMessage = "⚠️ تنبيه: الخدمة مشغولة حالياً. يرجى المحاولة بعد قليل.";
+          errorMessage = "⚠️ **الخدمة مشغولة**\n\nخوادم Gemini مشغولة حالياً بضغط عالٍ. يرجى المحاولة بعد دقيقة.";
       }
 
       setAiResponse(errorMessage);

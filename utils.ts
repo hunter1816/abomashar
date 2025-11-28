@@ -72,6 +72,30 @@ export const calculateSunSign = (dateString: string): number | null => {
 };
 
 /**
+ * Dedicated function to calculate Zodiac Sign from a Sum (Modulo 12).
+ * Used for Spiritual Sign (Name Sum) or any Isqat 12 calculation.
+ */
+export const calculateZodiacFromSum = (sum: number): {
+  signNumber: number;
+  zodiacSign: string;
+  element: string;
+  quality: string;
+} => {
+  let signNumber = sum % 12;
+  if (signNumber === 0) signNumber = 12;
+
+  const zodiacSign = HOUSE_MAPPING[signNumber] || 'مجهول';
+  const properties = ZODIAC_PROPERTIES[signNumber] || { element: 'مجهول', quality: 'مجهول' };
+
+  return {
+    signNumber,
+    zodiacSign,
+    element: properties.element,
+    quality: properties.quality
+  };
+};
+
+/**
  * Applies the Isqat (Modulo) rule and gathers Dignities.
  */
 export const performCalculation = (
@@ -104,11 +128,9 @@ export const performCalculation = (
     rulingPlanet = HOUSE_RULERS[finalNumber] || 'مجهول';
   }
 
-  // --- Determine Nature/Disposition via Name (Zairaja) (Always Isqat 12) ---
-  let signNumber = totalSum % 12;
-  if (signNumber === 0) signNumber = 12;
-  const zodiacSign = HOUSE_MAPPING[signNumber] || 'مجهول';
-  const properties = ZODIAC_PROPERTIES[signNumber] || { element: 'مجهول', quality: 'مجهول' };
+  // --- Determine Nature/Disposition via Total Sum (Zairaja/Spiritual) ---
+  // Using the new dedicated helper function
+  const spiritualSign = calculateZodiacFromSum(totalSum);
 
   // --- Determine Sun Sign via Birth Date ---
   let birthSignNumber: number | undefined;
@@ -139,11 +161,11 @@ export const performCalculation = (
     isqatType,
     planetOrHouse,
     
-    // Name-based nature
-    signNumber,
-    zodiacSign,
-    element: properties.element,
-    quality: properties.quality,
+    // Name-based nature (Spiritual Sign)
+    signNumber: spiritualSign.signNumber,
+    zodiacSign: spiritualSign.zodiacSign,
+    element: spiritualSign.element,
+    quality: spiritualSign.quality,
 
     // Birth-based nature
     birthSignNumber,

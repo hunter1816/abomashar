@@ -2,10 +2,21 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#1a1025" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="الزيارج" />
+    
     <title>الأبراج الفلكية</title>
-    <!-- Favicon to prevent 404 -->
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json" />
+    
+    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%231a1025%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22central%22 text-anchor=%22middle%22 font-size=%2270%22>✨</text></svg>">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Kufi+Arabic:wght@400;700&display=swap" rel="stylesheet">
     <script>
@@ -51,6 +62,8 @@
       body {
         background-color: #0f0a15;
         color: #e2e8f0;
+        /* Prevent pull-to-refresh on mobile which ruins app feel */
+        overscroll-behavior-y: none;
       }
       /* Fallback/Loading Styles */
       .fallback-container {
@@ -84,6 +97,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        font-size: 0.9rem;
       }
     </style>
   <script type="importmap">
@@ -116,13 +130,13 @@
                تنبيه: طريقة التشغيل غير مدعومة
              </h2>
              <p class="text-gray-300 mb-6 leading-loose text-lg">
-               لا يمكن تشغيل هذا التطبيق بالنقر المزدوج على ملف <strong>index.html</strong> مباشرة بسبب قيود الأمان في المتصفحات الحديثة.
+               لا يمكن تشغيل هذا التطبيق بالنقر المزدوج على ملف <strong>index.html</strong>.
              </p>
              
              <div class="w-full bg-white/5 rounded-xl p-6 text-right border border-white/10">
-               <h3 class="text-mystic-gold font-bold mb-2">الحل (باستخدام Python):</h3>
-               <p class="text-sm text-gray-400 mb-2">1. افتح مجلد المشروع.</p>
-               <p class="text-sm text-gray-400 mb-2">2. اكتب الأمر التالي في شريط العنوان أو التيرمينال:</p>
+               <h3 class="text-mystic-gold font-bold mb-2">طريقة التشغيل (للكمبيوتر والهاتف):</h3>
+               <p class="text-sm text-gray-400 mb-2">1. افتح التيرمينال داخل مجلد المشروع.</p>
+               <p class="text-sm text-gray-400 mb-2">2. شغل الخادم المحلي:</p>
                
                <div class="code-block">
                  <span id="cmd-text">python -m http.server</span>
@@ -131,7 +145,13 @@
                  </button>
                </div>
                
-               <p class="text-sm text-gray-400 mt-2">3. افتح المتصفح على الرابط: <a href="http://localhost:8000" class="text-blue-400 underline">http://localhost:8000</a></p>
+               <p class="text-sm text-gray-400 mt-4 mb-2 font-bold text-white">📱 للفتح من الهاتف:</p>
+               <p class="text-sm text-gray-400">
+                 1. تأكد أن الهاتف والكمبيوتر على نفس شبكة Wi-Fi.<br>
+                 2. اعرف الـ IP الخاص بالكمبيوتر (اكتب <code>ipconfig</code> في Windows أو <code>ifconfig</code> في Linux/Mac).<br>
+                 3. في متصفح الهاتف، اكتب: <code>http://[رقم-الآي-بي]:8000</code><br>
+                 <span class="text-xs opacity-70">مثال: http://192.168.1.5:8000</span>
+               </p>
              </div>
           </div>
         </div>
@@ -146,7 +166,7 @@
 
       function copyCmd() {
         navigator.clipboard.writeText('python -m http.server').then(() => {
-          alert('تم نسخ الأمر! الصقه في التيرمينال (CMD).');
+          alert('تم نسخ الأمر!');
         });
       }
     </script>
